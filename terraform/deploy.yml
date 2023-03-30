@@ -1,0 +1,38 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+    - name: Install Geth
+      apt:
+        name: geth
+
+    - name: Deploy smart contract
+      copy:
+        src: BakingMachineRental.sol
+        dest: /home/ubuntu/BakingMachineRental.sol
+      register: copy_output
+
+    - name: Compile smart contract
+      shell: |
+        cd /home/ubuntu
+        /usr/bin/geth --datadir /home/ubuntu/.ethereum init /home/ubuntu/genesis.json
+        /usr/bin/geth --datadir /home/ubuntu/.ethereum --networkid 1337 --nodiscover --maxpeers 0 console --rpc --rpcaddr "0.0.0.0" --rpcapi "eth,net,web3,personal,miner" --allow-insecure-unlock --password /home/ubuntu/password.txt --unlock "$(echo eth.accounts[0])" --mine << EOF
+        loadScript('/home/ubuntu/BakingMachineRental.sol')
+        var contract = web3.eth.contract(BakingMachineRental.abi)
+        var bytecode = '0x' + BakingMachineRental.bytecode
+        var contractInstance = contract.new({from: eth.coinbase, data: bytecode, gas: 2000000}, function(error, result) {
+          if (!error) {
+            if (result.address) {
+              console.log("Contract address: " + result.address)
+            }
+          }
+        });
+        exit
+      args:
+        executable: /bin/bash
+      register: deploy_output
+
+    - name: Print deploy output
+      debug:
+        var: deploy_output
