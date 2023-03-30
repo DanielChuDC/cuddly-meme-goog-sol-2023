@@ -1,0 +1,122 @@
+<div  class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12">
+            <!-- Receipt content goes here -->
+            <form (ngSubmit)="generateReceipt()">
+                <div class="form-group">
+                    <label for="requests">Requests:</label>
+                    <textarea class="form-control" id="requests" name="userRequests" rows="5" [(ngModel)]="userRequests"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Generate Receipt</button>
+              
+            </form>
+
+            <!-- <div *ngIf="receipt">
+                <h2>Receipt:</h2>
+                <ul>
+                    <li *ngFor="let item of receipt.items">{{ item?.name }} - {{ item?.price | currency }}</li>
+                </ul>
+                <p>Total: {{ receipt?.total | currency }}</p>
+            </div> -->
+<!-- 
+            <div class="receipt-container">
+                <div class="receipt-header">
+                  <h1>RECEIPT</h1>
+                </div>
+                <div class="receipt-body">
+                  <div class="receipt-info">
+                    <div>Borrower: {{ receipt?.borrower }}</div>
+                    <div>User: {{ receipt?.user }}</div>
+                    <div>Venue: {{ receipt?.venue }}</div>
+                    <div>Date: {{ receipt?.date }}</div>
+                    <div>Time: {{ receipt?.time }}</div>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of receipt.items">
+                        <td>{{ item?.name }}</td>
+                        <td>{{ item?.price | currency }}</td>
+                      </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td>Total</td>
+                        <td>{{ receipt?.total | currency }}</td>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              </div> -->
+
+              <div *ngIf="receipt" class="container">
+                <div class="row justify-content-center">
+                  <div class="col-12 col-md-8 col-lg-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h4 class="card-title">Receipt</h4>
+                      </div>
+                      <div class="card-body">
+                        <div class="row mb-3">
+                          <div class="col">
+                            <h5>Borrower</h5>
+                            <p>{{ receipt.borrower }}</p>
+                          </div>
+                          <div class="col">
+                            <h5>User</h5>
+                            <p>{{ receipt.user }}</p>
+                          </div>
+                        </div>
+                        <div class="row mb-3">
+                          <div class="col">
+                            <h5>Venue</h5>
+                            <p>{{ receipt.venue }}</p>
+                          </div>
+                          <div class="col">
+                            <h5>Date & Time</h5>
+                            <p>{{ receipt.date }} at {{ receipt.time }}</p>
+                          </div>
+                        </div>
+                        <table class="table">
+                          <thead>
+                            <tr>
+                              <th>Name</th>
+                              <th>Price</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of receipt.items">
+                              <td *ngIf="item">{{ item.name }}</td>
+                              <td *ngIf="item">{{ item.price | currency }}</td>
+                            </tr>
+                            <tr *ngFor="let item of receipt.conditions">
+                                <td><strong><em>{{ item.name }}</em></strong></td>
+                                <td><strong><em>{{ item.condition }}</em></strong></td>
+                              </tr>
+                          </tbody>
+                          <tfoot>
+                            <tr>
+                              <td><strong>Total</strong></td>
+                              <td><strong>{{ receipt.total | currency }}</strong></td>
+                            </tr>
+                          </tfoot>
+                        </table>
+                      </div>
+                      <div class="card-footer text-muted  justify-content-center">
+                        Thank you !
+                      </div>
+                      <button class="btn btn-primary" *ngIf="receipt">Confirm</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              
+        </div>
+    </div>
+</div>
